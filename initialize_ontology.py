@@ -273,11 +273,11 @@ def _merge_ontology_metadata(tx) -> None:
     tx.run(
         """
         MERGE (ontology:MithridOntology {id: $id})
+        ON CREATE SET ontology.createdAt = datetime()
         SET ontology.name = $name,
             ontology.version = $version,
             ontology.description = $description,
             ontology.updatedAt = datetime()
-        ON CREATE SET ontology.createdAt = datetime()
         """,
         id="mithrid-core",
         name="Mithrid Core Ontology",
@@ -290,9 +290,9 @@ def _merge_ontology_metadata(tx) -> None:
         MATCH (ontology:MithridOntology {id: $ontologyId})
         UNWIND $classes AS class
         MERGE (c:OntologyClass {name: class.name})
+        ON CREATE SET c.createdAt = datetime()
         SET c.description = class.description,
             c.updatedAt = datetime()
-        ON CREATE SET c.createdAt = datetime()
         MERGE (ontology)-[:DEFINES_CLASS]->(c)
         """,
         ontologyId="mithrid-core",
@@ -306,11 +306,11 @@ def _merge_ontology_metadata(tx) -> None:
         MATCH (fromClass:OntologyClass {name: relationship.from})
         MATCH (toClass:OntologyClass {name: relationship.to})
         MERGE (r:OntologyRelationship {name: relationship.name})
+        ON CREATE SET r.createdAt = datetime()
         SET r.description = relationship.description,
             r.from = relationship.from,
             r.to = relationship.to,
             r.updatedAt = datetime()
-        ON CREATE SET r.createdAt = datetime()
         MERGE (ontology)-[:DEFINES_RELATIONSHIP]->(r)
         MERGE (fromClass)-[:CAN_CONNECT_WITH {type: relationship.name}]->(toClass)
         """,
