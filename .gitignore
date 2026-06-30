@@ -1,4 +1,29 @@
+# Local Docker data volumes
 neo4j/
 n8n_data/
+data/
+logs/
+import/
+imports/
+
+# Environment files and secrets
 .env
+.env.*
+!.env.example
+secrets/
+*.key
+*.pem
+*.crt
+*.p12
+
+# Python runtime artifacts
 __pycache__/
+*.py[cod]
+*$py.class
+.python-version
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
